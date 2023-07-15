@@ -1,5 +1,10 @@
 import * as React from "react";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import Lottie from "lottie-react-native";
 import { ThreadContext } from "../../context/thread-context";
 import ThreadItem from "../../components/ThreadItem";
@@ -13,31 +18,35 @@ export default function TabOneScreen() {
   }, []);
 
   return (
-    <ScrollView
-      contentContainerStyle={{ paddingTop: 30, paddingHorizontal: 10 }}
-      refreshControl={
-        <RefreshControl
-          refreshing={false}
-          tintColor={"transparent"}
-          onRefresh={() => animationRef.current?.play()}
-        />
-      }
-    >
-      <Lottie
-        ref={animationRef}
-        source={require("../../lottie-animations/threads.json")}
-        style={{
-          width: 90,
-          height: 90,
-          alignSelf: "center",
+    <SafeAreaView>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 10,
         }}
-        loop={false}
-        onAnimationFinish={() => animationRef.current?.pause()}
-      />
-      {threads.map((thread) => (
-        <ThreadItem key={thread.id} thread={thread} />
-      ))}
-    </ScrollView>
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            tintColor={"transparent"}
+            onRefresh={() => animationRef.current?.play()}
+          />
+        }
+      >
+        <Lottie
+          ref={animationRef}
+          source={require("../../lottie-animations/threads.json")}
+          style={{
+            width: 90,
+            height: 90,
+            alignSelf: "center",
+          }}
+          loop={false}
+          onAnimationFinish={() => animationRef.current?.pause()}
+        />
+        {threads.map((thread) => (
+          <ThreadItem key={thread.id} thread={thread} />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
