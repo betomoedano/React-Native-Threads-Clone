@@ -1,17 +1,12 @@
 import * as React from "react";
-import {
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
-import { Text, View } from "../../components/Themed";
+import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import Lottie from "lottie-react-native";
-import { StatusBar } from "expo-status-bar";
+import { ThreadContext } from "../../context/thread-context";
+import ThreadItem from "../../components/ThreadItem";
 
 export default function TabOneScreen() {
   const animationRef = React.useRef<Lottie>(null);
+  const threads = React.useContext(ThreadContext);
 
   React.useEffect(() => {
     animationRef.current?.play();
@@ -19,7 +14,7 @@ export default function TabOneScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingTop: 30 }}
+      contentContainerStyle={{ paddingTop: 30, paddingHorizontal: 10 }}
       refreshControl={
         <RefreshControl
           refreshing={false}
@@ -39,7 +34,9 @@ export default function TabOneScreen() {
         loop={false}
         onAnimationFinish={() => animationRef.current?.pause()}
       />
-      <Text style={styles.title}>Home Screen</Text>
+      {threads.map((thread) => (
+        <ThreadItem key={thread.id} thread={thread} />
+      ))}
     </ScrollView>
   );
 }
