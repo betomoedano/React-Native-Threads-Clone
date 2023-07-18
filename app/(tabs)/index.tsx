@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -21,6 +22,7 @@ export default function TabOneScreen() {
     <SafeAreaView>
       <ScrollView
         contentContainerStyle={{
+          paddingTop: Platform.select({ android: 30 }),
           paddingHorizontal: 10,
         }}
         refreshControl={
