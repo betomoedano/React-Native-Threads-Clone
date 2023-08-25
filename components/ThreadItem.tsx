@@ -5,17 +5,23 @@ import { Text } from "./Themed";
 import { timeAgo } from "../utils/timeAgo";
 import { Ionicons, Feather, AntDesign, FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
 
 interface TheradItemProps {
   thread: Thread;
 }
 
-const blurhash =
+export const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
 export default function ThreadItem({ thread }: TheradItemProps): JSX.Element {
+  const navigation = useNavigation();
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      style={styles.container}
+      // @ts-ignore
+      onPress={() => navigation.navigate("thread-details", { ...thread })}
+    >
       <PostLeftSide {...thread} />
       <View style={{ flexShrink: 1, gap: 6 }}>
         <PostHeading
@@ -72,6 +78,7 @@ function PostLeftSide(thread: Thread) {
         {[1, 2, 3].map((index) => (
           <Image
             key={index}
+            // @ts-ignore
             source={thread.replies[index - 1]?.author.photo}
             style={{ width: index * 7, height: index * 7, borderRadius: 15 }}
             placeholder={blurhash}
@@ -84,7 +91,7 @@ function PostLeftSide(thread: Thread) {
   );
 }
 
-function PostHeading({
+export function PostHeading({
   name,
   createdAt,
   verified,
@@ -100,6 +107,7 @@ function PostHeading({
         alignItems: "center",
         justifyContent: "space-between",
         flexGrow: 1,
+        width: "100%",
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
@@ -116,7 +124,13 @@ function PostHeading({
   );
 }
 
-function PostFooter({ replies, likes }: { replies: number; likes: number }) {
+export function PostFooter({
+  replies,
+  likes,
+}: {
+  replies: number;
+  likes: number;
+}) {
   return (
     <Text style={{ color: "gray" }}>
       {replies} replies · {likes} likes
@@ -124,7 +138,7 @@ function PostFooter({ replies, likes }: { replies: number; likes: number }) {
   );
 }
 
-function BottomIcons() {
+export function BottomIcons() {
   const iconSize = 20;
   const currentTheme = useColorScheme();
   const iconColor = currentTheme === "dark" ? "white" : "black";
